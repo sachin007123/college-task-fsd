@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movies da</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: radial-gradient(circle,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%) ; }
+        h1 { color: rgb(249, 249, 253); font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+        #special { font-size: 22px; color: #2c4efb; font-family: Georgia, 'Times New Roman', Times, serif;}
+        #offer { display: none; color: rgb(19, 237, 19); font-weight: bold; }
+        img { width: 220px; border-radius: 10px; box-shadow: 4px 2px 0px; }
+        button { padding: 8px 15px; margin: 5px; cursor: pointer; border-radius: 8px; background-color: royalblue;}
+        button:hover{
+            transform: translateY(-5px);
+            transition-duration: 0.6s;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="shopTitle">Welcome to Movies DA</h1>
+
+    <p id="special">Today's Special Movies:Aayirathil Oruvan  </p>
+
+    <img src="Aayirathil oruvan.jpeg" id="MovieImg" alt="Movie Image">
+
+    <!--<p id="offer">Special Offer: Buy 1 Get 1 Free!</p>-->
+
+    <br>
+
+    <button onclick="changeCake()">Change Movie Post</button>
+    <button onclick="changeTheme()">Change Theme</button>
+    <button onclick="toggleOffer()">Show/Hide Movies Post</button>
+
+    <!-- JavaScript should be inside script tag -->
+    <script>
+        function changeCake() {
+            document.getElementById("special").innerHTML =
+                "Next' Special Movies: Pirates of the Cariabbian";
+            document.getElementById("MovieImg").src = "“Pirates Of The Caribbean_ The Curse Of The Black Pearl” - Movie Poster _ Part of the score of the film is included in the album _100 Best Film Classics _.jpeg";
+        }
+
+        function changeTheme() {
+            document.body.style.background = "#020024";
+            document.getElementById("shopTitle").style.color = "rgb(249, 249, 253";
+        }
+
+        function toggleOffer() {
+            let MovieImg= document.getElementById("MovieImg");
+
+            if (MovieImg.style.display === "none") {
+                MovieImg.style.display = "inline";
+            } else {
+                MovieImg.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
