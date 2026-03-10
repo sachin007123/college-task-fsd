@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Version Control using Git</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2333;
+      --border: #30363d;
+      --orange: #f97316;
+      --orange-dim: #f9731620;
+      --green: #3fb950;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --code-bg: #0d1117;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    header {
+      position: relative;
+      padding: 80px 40px 60px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #f9731612, transparent);
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--orange-dim);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+    header h1 span { color: var(--orange); }
+    header p.sub {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      max-width: 860px;
+      margin: 60px auto;
+      padding: 0 30px;
+    }
+    .intro h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--blue);
+    }
+    .intro p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.97rem;
+      margin-bottom: 14px;
+    }
+    .intro p strong { color: var(--text); }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+    }
+    @media(max-width: 600px){ .cards { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+    }
+    .card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── HOW GIT WORKS ── */
+    .how-section {
+      max-width: 860px;
+      margin: 0 auto 80px;
+      padding: 0 30px;
+    }
+    .how-section h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .how-section .hint {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .hint span { color: var(--orange); }
+
+    /* Step cards */
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .step.open { border-color: var(--orange); }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .step-header:hover { background: var(--surface2); }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--orange-dim);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-title {
+      flex: 1;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .step-cmd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--green);
+      background: #3fb95015;
+      border: 1px solid #3fb95030;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+    .chevron {
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: transform 0.3s;
+    }
+    .step.open .chevron { transform: rotate(180deg); color: var(--orange); }
+
+    /* Expandable body */
+    .step-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s ease, padding 0.3s;
+      border-top: 1px solid transparent;
+    }
+    .step.open .step-body {
+      max-height: 600px;
+      border-top-color: var(--border);
+    }
+    .step-body-inner { padding: 22px; }
+
+    .step-body p.desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .code-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .code-top .dots { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: #28c840; }
+    .code-top .lang {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+    .code-block pre {
+      padding: 16px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: var(--green);
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+    .code-block pre .comment { color: #4b5563; }
+    .code-block pre .flag { color: var(--blue); }
+    .code-block pre .string { color: var(--orange); }
+
+    /* Output block */
+    .output-block {
+      background: #0a0f16;
+      border: 1px solid #1e2d3d;
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+    .output-block .out-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--blue);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .output-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #7dd3fc;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer span { color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header>
+  <div class="badge">GIT AND GITHUB</div>
+  <h1>Version Control<br/>using <span>Git</span></h1>
+  <p class="sub">A beginner-friendly guide to Git & GitHub</p>
+</header>
+
+<!-- INTRO -->
+<section class="intro">
+  <h2>What is Git?</h2>
+  <p><strong>Git</strong> is a free, open-source distributed version control system. It tracks changes in your code over time, lets multiple people collaborate on the same project, and allows you to revert to previous versions if something goes wrong.</p>
+  <p><strong>GitHub</strong> is a cloud-based platform that hosts Git repositories. Think of Git as the tool and GitHub as the online service that stores your work and makes collaboration easy.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🔀</div>
+      <h3>Track Changes</h3>
+      <p>Every change you make is saved as a "commit" — a snapshot of your project at that moment in time.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🤝</div>
+      <h3>Collaborate</h3>
+      <p>Multiple developers can work on the same project simultaneously without overwriting each other's work.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🌿</div>
+      <h3>Branching</h3>
+      <p>Create separate branches to build features or fix bugs without affecting the main codebase.</p>
+    </div>
+    <div class="card">
+      <div class="icon">☁️</div>
+      <h3>Backup & Restore</h3>
+      <p>Your code is safely stored on GitHub. You can restore any previous version whenever you need it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW GIT WORKS -->
+<section class="how-section">
+  <h2>How Git Works</h2>
+  <p class="hint">// <span>Click any step</span> to see the command and output</p>
+
+  <!-- Steps will be injected here -->
+  <div id="steps-container"></div>
+</section>
+
+<footer>
+  Made with ❤️ By Sachin.i &nbsp;|&nbsp; <span>Git & GitHub</span> Version Control
+</footer>
+
+<script>
+  const steps = [
+    {
+      num: 1,
+      title: "Repository Creation",
+      cmd: "git init",
+      desc: "A repository (repo) is a folder tracked by Git. Running git init turns any folder into a Git repository by creating a hidden .git directory that stores all tracking information.",
+      code: `<span class="comment"># Navigate to your project folder first</span>
+cd my-project
+
+<span class="comment"># Initialize a new Git repository</span>
+git init`,
+      output: `Initialized empty Git repository in /home/user/my-project/.git/
+
+📁 .git/
+  ├── config
+  ├── HEAD
+  ├── objects/
+  └── refs/`
+    },
+    {
+      num: 2,
+      title: "Commit",
+      cmd: "git commit",
+      desc: "A commit saves a snapshot of your changes. First, you stage files with 'git add', then you commit them with a message describing what changed.",
+      code: `<span class="comment"># Check status of changed files</span>
+git status
+
+<span class="comment"># Stage all files</span>
+git add <span class="flag">.</span>
+
+<span class="comment"># Commit with a message</span>
+git commit <span class="flag">-m</span> <span class="string">"Initial commit: added index.html"</span>`,
+      output: `On branch main
+Changes to be committed:
+  new file:   index.html
+  new file:   style.css
+
+[main (root-commit) a3f1c2d] Initial commit: added index.html
+ 2 files changed, 45 insertions(+)
+ create mode 100644 index.html
+ create mode 100644 style.css`
+    },
+    {
+      num: 3,
+      title: "Push",
+      cmd: "git push",
+      desc: "Pushing uploads your local commits to a remote repository on GitHub, so others can see and access your work.",
+      code: `<span class="comment"># Link local repo to GitHub remote (first time)</span>
+git remote add origin https://github.com/user/my-project.git
+
+<span class="comment"># Push commits to GitHub</span>
+git push <span class="flag">-u</span> origin main`,
+      output: `Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 512 bytes | 512.00 KiB/s, done.
+Total 4 (delta 0), reused 0 (delta 0)
+To https://github.com/user/my-project.git
+ * [new branch]  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.`
+    },
+    {
+      num: 4,
+      title: "Pull",
+      cmd: "git pull",
+      desc: "Pull fetches the latest changes from the remote repository and merges them into your local branch. Use this to stay up-to-date when others push new code.",
+      code: `<span class="comment"># Pull the latest changes from GitHub</span>
+git pull origin main`,
+      output: `remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (2/2), done.
+Unpacking objects: 100% (3/3), done.
+From https://github.com/user/my-project
+   a3f1c2d..b7e3d91  main -> origin/main
+Updating a3f1c2d..b7e3d91
+Fast-forward
+ README.md | 10 ++++++++++
+ 1 file changed, 10 insertions(+)`
+    },
+    {
+      num: 5,
+      title: "Branch",
+      cmd: "git branch",
+      desc: "A branch is an independent line of development. You can create a branch to work on a new feature without touching the main (stable) codebase.",
+      code: `<span class="comment"># Create a new branch</span>
+git branch feature-login
+
+<span class="comment"># Switch to the new branch</span>
+git checkout feature-login
+
+<span class="comment"># Or do both in one command</span>
+git checkout <span class="flag">-b</span> feature-login
+
+<span class="comment"># List all branches</span>
+git branch`,
+      output: `Switched to a new branch 'feature-login'
+
+* feature-login    ← you are here
+  main`
+    },
+    {
+      num: 6,
+      title: "Merge",
+      cmd: "git merge",
+      desc: "Merging combines the changes from one branch into another. Once your feature is ready, you merge it back into the main branch.",
+      code: `<span class="comment"># Switch back to main branch first</span>
+git checkout main
+
+<span class="comment"># Merge the feature branch into main</span>
+git merge feature-login`,
+      output: `Updating a3f1c2d..c9d2e14
+Fast-forward
+ login.html | 28 ++++++++++++++++++++++++++++
+ auth.js    | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
+ create mode 100644 login.html
+ create mode 100644 auth.js
+
+✅ Branch 'feature-login' merged into 'main' successfully.`
+    }
+  ];
+
+  const container = document.getElementById('steps-container');
+
+  steps.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'step';
+    el.innerHTML = `
+      <div class="step-header" onclick="toggleStep(${i})">
+        <div class="step-num">${s.num}</div>
+        <div class="step-title">${s.title}</div>
+        <div class="step-cmd">${s.cmd}</div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="step-body" id="body-${i}">
+        <div class="step-body-inner">
+          <p class="desc">${s.desc}</p>
+          <div class="code-block">
+            <div class="code-top">
+              <div class="dots">
+                <div class="dot r"></div>
+                <div class="dot y"></div>
+                <div class="dot g"></div>
+              </div>
+              <div class="lang">BASH</div>
+            </div>
+            <pre>${s.code}</pre>
+          </div>
+          <div class="output-block">
+            <div class="out-label">Terminal Output</div>
+            <pre>${s.output}</pre>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  function toggleStep(index) {
+    const step = document.querySelectorAll('.step')[index];
+    const isOpen = step.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+
+    // Open clicked if it was closed
+    if (!isOpen) step.classList.add('open');
+  }
+</script>
+</body>
+</html>

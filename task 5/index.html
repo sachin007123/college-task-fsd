@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Events</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background:linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background: teal;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkcyan;
+        }
+
+        #box {
+            width: 200px;
+            height: 100px;
+            background: lightgray;
+            margin: 20px auto;
+            line-height: 100px;
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 2px solid gray;
+            border-radius: 5px;
+        }
+
+        .output {
+            margin-top: 10px;
+            font-weight: bold;
+            color: rgb(6, 230, 230);
+        }
+
+        .form{
+            border:2px;
+            border-radius: 6px;
+            box-shadow: 2px 0px 2px 0px;
+            width: 50%;
+           display:inline-block;
+
+        }
+    </style>
+</head>
+
+<body>
+<div class="form">
+<h2>All JavaScript Event Handling</h2>
+
+<button id="clickBtn">Click</button>
+<button id="dblBtn">Double Click</button>
+<div id="box">Hover / Right Click</div>
+
+
+<input type="text" id="keyInput" placeholder="Type here">
+
+
+<form id="myForm">
+    <input type="text" id="name" placeholder="Enter name" required>
+   
+</form>
+
+<button type="submit">Sumbit</button>
+
+<p class="output" id="output"></p>
+
+
+</div>
+
+<script>
+
+let output = document.getElementById("output");
+
+/* ---------------- MOUSE EVENTS ---------------- */
+
+document.getElementById("clickBtn").addEventListener("click", function() {
+    output.innerHTML = "Click Event Triggered";
+});
+
+document.getElementById("dblBtn").addEventListener("dblclick", function() {
+    output.innerHTML = "Double Click Event Triggered";
+});
+
+let box = document.getElementById("box");
+
+box.addEventListener("mouseover", function() {
+    box.style.background = "green";
+    output.innerHTML = "Mouse Over Event";
+});
+
+box.addEventListener("mouseout", function() {
+    box.style.background = "lightgray";
+    output.innerHTML = "Mouse Out Event";
+});
+
+box.addEventListener("mousedown", function() {
+    output.innerHTML = "Mouse Down Event";
+});
+
+box.addEventListener("mouseup", function() {
+    output.innerHTML = "Mouse Up Event";
+});
+
+box.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+    output.innerHTML = "Right Click Event";
+});
+
+/* ---------------- KEYBOARD EVENTS ---------------- */
+
+let keyInput = document.getElementById("keyInput");
+
+keyInput.addEventListener("keydown", function(event) {
+    output.innerHTML = "Key Down: " + event.key;
+});
+
+keyInput.addEventListener("keypress", function(event) {
+    output.innerHTML = "Key Press: " + event.key;
+});
+
+keyInput.addEventListener("keyup", function(event) {
+    output.innerHTML = "Key Up: " + event.key;
+});
+
+/* ---------------- FORM EVENTS ---------------- */
+
+let nameInput = document.getElementById("name");
+
+nameInput.addEventListener("focus", function() {
+    nameInput.style.borderColor = "blue";
+    output.innerHTML = "Focus Event";
+});
+
+nameInput.addEventListener("blur", function() {
+    nameInput.style.borderColor = "gray";
+    output.innerHTML = "Blur Event";
+});
+
+nameInput.addEventListener("change", function() {
+    output.innerHTML = "Change Event";
+});
+
+document.getElementById("myForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    output.innerHTML = "Form Submitted Successfully";
+});
+
+document.getElementById("myForm").addEventListener("reset", function() {
+    output.innerHTML = "Form Reset Event";
+});
+
+/* ---------------- WINDOW EVENTS ---------------- */
+
+window.addEventListener("load", function() {
+    console.log("Page Loaded");
+    alert("Windows Load")
+});
+
+window.addEventListener("resize", function() {
+    console.log("Window Resized");
+    alert("window resize")
+});
+
+window.addEventListener("scroll", function() {
+    console.log("Page Scrolled");
+    alert("page Scrolld")
+});
+
+</script>
+
+</body>
+</html>

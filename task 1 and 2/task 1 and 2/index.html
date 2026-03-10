@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNSTC | Online Ticket Reservation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/ChatGPT Image Jan 22, 2026, 04_53_49 PM.png">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/ChatGPT Image Jan 22, 2026, 04_53_49 PM.png" alt="TNSTC Logo">
+            <span class="logo-text">TNSTC</span> 
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="#">Hire Bus</a></li>
+                <li><a href="#">Track Ticket</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="login/index.html" class="btn-login">Login / Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="hero">
+            <h2>Online Ticket Reservation System (OTRS)</h2>
+            <p>Experience comfortable and safe journeys. Book your tickets easily and quickly.</p>
+        </div>
+
+        <div class="booking-card">
+            <form action="#" class="booking-form">
+                <div class="form-header">
+                    <h3>Book Bus Ticket</h3>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="Source">Source</label>
+                        <input type="text" name="Source" id="Source" placeholder="From Place" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" name="destination" id="destination" placeholder="To Place" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="onward">Onward</label>
+                        <input type="date" name="onward" id="onward" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="return">Return</label>
+                        <input type="date" name="return" id="return">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" name="box" id="box">
+                    <label for="box">Single Lady Traveler</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-search">Search Bus</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="#">About US</a></li>
+                    <li><a href="#">Information</a></li>
+                    <li><a href="#">Rules & Regulations</a></li>
+                    <li><a href="#">Reservation</a></li>
+                    <li><a href="#">Special Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Counter Address</a></li>
+                    <li><a href="#">Suggestions</a></li>
+                    <li><a href="#">Compatible browser</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Browser settings</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TNSTC. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

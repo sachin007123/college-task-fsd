@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNSTC | Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../assets/ChatGPT Image Jan 22, 2026, 04_53_49 PM.png">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <div class="auth-container">
+        <a href="../index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to Home
+        </a>
+
+        <div class="auth-card">
+            <form id="signupForm" class="auth-form" novalidate>
+                <div class="form-header">
+                    <img src="../assets/ChatGPT Image Jan 22, 2026, 04_53_49 PM.png" alt="TNSTC Logo" class="auth-logo">
+                    <h2>Create Account</h2>
+                    <p>Join TNSTC to book and manage your tickets easily</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="Email">Email Address</label>
+                    <input type="email" id="Email" placeholder="e.g., mail@example.com">
+                    <div id="emailError" class="error"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="Mobile">Mobile Number</label>
+                    <input type="tel" id="Mobile" placeholder="10-digit mobile number" maxlength="10">
+                    <div id="mobileError" class="error"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="FullName">Full Name</label>
+                    <input type="text" id="FullName" placeholder="Enter your full name">
+                    <div id="nameError" class="error"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="pass">Password</label>
+                    <input type="password" id="pass" placeholder="Create a password">
+                    <div id="passError" class="error"></div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="box">
+                    <label for="box">I agree to the <a href="#">Terms & Conditions</a></label>
+                </div>
+                <div id="checkError" class="error" style="margin-top: -10px; margin-bottom: 20px;"></div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Sign Up</button>
+                </div>
+
+                <div id="successMsg" class="success"></div>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="#">Log in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event){
+            event.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => {
+                el.innerHTML = "";
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('input').forEach(el => {
+                el.classList.remove('input-error');
+            });
+            
+            let successEl = document.getElementById("successMsg");
+            successEl.innerHTML = "";
+            successEl.classList.remove('active');
+
+            let emailInput = document.getElementById("Email");
+            let mobileInput = document.getElementById("Mobile");
+            let fullnameInput = document.getElementById("FullName");
+            let passInput = document.getElementById("pass");
+            let checkboxInput = document.getElementById("box");
+
+            let email = emailInput.value.trim();
+            let mobile = mobileInput.value.trim();
+            let fullname = fullnameInput.value.trim();
+            let password = passInput.value;
+            let checkbox = checkboxInput.checked;
+
+            let valid = true;
+
+            function showError(inputId, errorId, message) {
+                let errorRow = document.getElementById(errorId);
+                errorRow.innerHTML = message;
+                errorRow.classList.add('active');
+                if(inputId) {
+                    document.getElementById(inputId).classList.add('input-error');
+                }
+                valid = false;
+            }
+
+            // Email validation
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if(!email.match(emailPattern)){
+                showError("Email", "emailError", "Please enter a valid email address");
+            }
+
+            // Mobile validation
+            let mobilePattern = /^[0-9]{10}$/;
+            if(!mobile.match(mobilePattern)){
+                showError("Mobile", "mobileError", "Mobile number must be 10 digits");
+            }
+
+            // Name validation
+            let namePattern = /^[A-Za-z ]{7,}$/;
+            if(!fullname.match(namePattern)){
+                showError("FullName", "nameError", "Name must be at least 7 letters long");
+            }
+
+            // Password validation
+            if(password.length < 4){
+                showError("pass", "passError", "Password must be at least 4 characters");
+            }
+
+            // Checkbox validation
+            if(!checkbox){
+                showError(null, "checkError", "You must agree to the Terms & Conditions");
+            }
+
+            if(valid){
+                successEl.innerHTML = "Account created successfully! 🎉 Redirecting...";
+                successEl.classList.add('active');
+                // Optional: reset form or redirect
+                // setTimeout(() => window.location.href = '../index.html', 2000);
+            }
+        });
+    </script>
+</body>
+</html>
