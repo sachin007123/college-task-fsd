@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ES6 Features</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f0f13; color: #e0e0f0; font-family: 'JetBrains Mono', monospace; padding: 30px; }
+  h1 { font-size: 22px; color: #a78bfa; margin-bottom: 6px; }
+  .sub { color: #555; font-size: 12px; margin-bottom: 28px; }
+  .card { background: #17171f; border: 1px solid #2a2a3a; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  .card:hover { border-color: #a78bfa44; }
+  .label { font-size: 10px; letter-spacing: 2px; color: #a78bfa; text-transform: uppercase; margin-bottom: 10px; }
+  pre { font-size: 13px; line-height: 1.8; white-space: pre-wrap; }
+  .kw  { color: #c792ea; }
+  .fn  { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .cm  { color: #4a4a6a; }
+  .op  { color: #89ddff; }
+  .num { color: #f78c6c; }
+  .btn { margin-top: 14px; padding: 7px 16px; background: #a78bfa; border: none; border-radius: 6px; color: white; font-family: inherit; font-size: 12px; cursor: pointer; }
+  .btn:hover { background: #8b6ef0; }
+  .out { margin-top: 10px; background: #0c0c14; border-radius: 6px; padding: 12px 16px; display: none; font-size: 13px; color: #6af7c8; line-height: 1.7; }
+  .out.show { display: block; }
+</style>
+</head>
+<body>
+
+<h1>ES6 Features</h1>
+<div class="sub">// Advanced JavaScript — click ▶ to run each example</div>
+
+<!-- Arrow Functions -->
+<div class="card">
+  <div class="label">01 — Arrow Functions</div>
+  <pre><span class="kw">const</span> <span class="fn">add</span>    = (a, b) <span class="op">=></span> a + b;
+<span class="kw">const</span> <span class="fn">square</span> = n <span class="op">=></span> n * n;
+<span class="kw">const</span> <span class="fn">greet</span>  = name <span class="op">=></span> <span class="str">`Hello, <span class="op">${</span>name<span class="op">}</span>!`</span>;
+
+<span class="cm">// Array methods with arrows</span>
+[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>].<span class="fn">filter</span>(n <span class="op">=></span> n % <span class="num">2</span> === <span class="num">0</span>).<span class="fn">map</span>(n <span class="op">=></span> n * n);</pre>
+  <button class="btn" onclick="run('a')">▶ Run</button>
+  <div class="out" id="a"></div>
+</div>
+
+<!-- Destructuring -->
+<div class="card">
+  <div class="label">02 — Destructuring</div>
+  <pre><span class="cm">// Object</span>
+<span class="kw">const</span> { name, age = <span class="num">18</span> } = { name: <span class="str">"Alice"</span>, age: <span class="num">25</span> };
+
+<span class="cm">// Array</span>
+<span class="kw">const</span> [first, , third] = [<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>];
+
+<span class="cm">// Swap</span>
+<span class="kw">let</span> x = <span class="num">1</span>, y = <span class="num">2</span>;
+[x, y] = [y, x];</pre>
+  <button class="btn" onclick="run('b')">▶ Run</button>
+  <div class="out" id="b"></div>
+</div>
+
+<!-- Template Literals -->
+<div class="card">
+  <div class="label">03 — Template Literals</div>
+  <pre><span class="kw">const</span> item  = <span class="str">"Laptop"</span>, price = <span class="num">999</span>;
+
+<span class="cm">// Interpolation + expression</span>
+<span class="kw">const</span> msg = <span class="str">`<span class="op">${</span>item<span class="op">}</span> costs $<span class="op">${</span>price<span class="op">}</span>.
+After 10% off: $<span class="op">${</span>price * <span class="num">0.9</span><span class="op">}</span>`</span>;</pre>
+  <button class="btn" onclick="run('c')">▶ Run</button>
+  <div class="out" id="c"></div>
+</div>
+
+<!-- Modules -->
+<div class="card">
+  <div class="label">04 — Modules</div>
+  <pre><span class="cm">// math.js</span>
+<span class="kw">export const</span> <span class="fn">add</span> = (a, b) <span class="op">=></span> a + b;
+<span class="kw">export default class</span> Calc {
+  <span class="fn">pow</span>(a, b) { <span class="kw">return</span> a ** b; }
+}
+
+<span class="cm">// app.js</span>
+<span class="kw">import</span> Calc, { add } <span class="kw">from</span> <span class="str">"./math.js"</span>;
+<span class="kw">const</span> c = <span class="kw">new</span> Calc();
+console.<span class="fn">log</span>(add(<span class="num">3</span>,<span class="num">4</span>), c.<span class="fn">pow</span>(<span class="num">2</span>,<span class="num">8</span>));</pre>
+  <button class="btn" onclick="run('d')">▶ Simulate</button>
+  <div class="out" id="d"></div>
+</div>
+
+<!-- Promises -->
+<div class="card">
+  <div class="label">05 — Promises</div>
+  <pre><span class="kw">const</span> <span class="fn">fetchData</span> = id <span class="op">=></span> <span class="kw">new</span> Promise((res, rej) <span class="op">=></span>
+  setTimeout(() <span class="op">=></span> id > <span class="num">0</span> ? res(<span class="str">"User: Alice"</span>) : rej(<span class="str">"Not found"</span>), <span class="num">100</span>)
+);
+
+<span class="fn">fetchData</span>(<span class="num">1</span>)
+  .<span class="fn">then</span>(data <span class="op">=></span> console.<span class="fn">log</span>(<span class="str">"✓"</span>, data))
+  .<span class="fn">catch</span>(err <span class="op">=></span> console.<span class="fn">log</span>(<span class="str">"✗"</span>, err));</pre>
+  <button class="btn" onclick="run('e')">▶ Run</button>
+  <div class="out" id="e"></div>
+</div>
+
+<!-- Async/Await -->
+<div class="card">
+  <div class="label">06 — Async / Await</div>
+  <pre><span class="kw">const</span> wait = (ms, v) <span class="op">=></span> <span class="kw">new</span> Promise(r <span class="op">=></span> setTimeout(() <span class="op">=></span> r(v), ms));
+
+<span class="kw">async function</span> <span class="fn">main</span>() {
+  <span class="kw">const</span> user  = <span class="kw">await</span> <span class="fn">wait</span>(<span class="num">80</span>, <span class="str">"Alice"</span>);
+  <span class="kw">const</span> score = <span class="kw">await</span> <span class="fn">wait</span>(<span class="num">80</span>, <span class="num">95</span>);
+  console.<span class="fn">log</span>(<span class="str">`<span class="op">${</span>user<span class="op">}</span> scored <span class="op">${</span>score<span class="op">}</span>`</span>);
+}
+
+<span class="fn">main</span>();</pre>
+  <button class="btn" onclick="run('f')">▶ Run</button>
+  <div class="out" id="f"></div>
+</div>
+
+<script>
+function run(id) {
+  const out = document.getElementById(id);
+  const logs = [];
+  const orig = console.log;
+  console.log = (...a) => logs.push(a.join(' '));
+
+  try {
+    if (id === 'a') {
+      const add = (a,b) => a+b;
+      const square = n => n*n;
+      const greet = name => `Hello, ${name}!`;
+      const evens = [1,2,3,4].filter(n=>n%2===0).map(n=>n*n);
+      console.log('add(3,4) =', add(3,4));
+      console.log('square(5) =', square(5));
+      console.log(greet('Alice'));
+      console.log('even squares:', JSON.stringify(evens));
+    }
+    if (id === 'b') {
+      const { name, age = 18 } = { name:"Alice", age:25 };
+      const [first,,third] = ["a","b","c"];
+      let x=1, y=2; [x,y]=[y,x];
+      console.log(`name=${name}, age=${age}`);
+      console.log(`first=${first}, third=${third}`);
+      console.log(`swapped: x=${x}, y=${y}`);
+    }
+    if (id === 'c') {
+      const item="Laptop", price=999;
+      const msg = `${item} costs $${price}.\nAfter 10% off: $${price*0.9}`;
+      console.log(msg);
+    }
+    if (id === 'd') {
+      const add = (a,b) => a+b;
+      class Calc { pow(a,b){return a**b;} }
+      const c = new Calc();
+      console.log('add(3,4) =', add(3,4));
+      console.log('pow(2,8) =', c.pow(2,8));
+    }
+    if (id === 'e') {
+      const fetchData = id => new Promise((res,rej) =>
+        setTimeout(()=> id>0 ? res("User: Alice") : rej("Not found"), 100)
+      );
+      fetchData(1).then(d=>{logs.push('✓ '+d); show(id,logs);});
+      fetchData(-1).catch(e=>{logs.push('✗ '+e); show(id,logs);});
+    }
+    if (id === 'f') {
+      const wait = (ms,v) => new Promise(r=>setTimeout(()=>r(v),ms));
+      async function main() {
+        const user  = await wait(80,"Alice");
+        const score = await wait(80,95);
+        console.log(`${user} scored ${score}`);
+        show(id,logs);
+      }
+      main();
+    }
+  } catch(e) { logs.push('Error: '+e.message); }
+
+  console.log = orig;
+  if (id !== 'e' && id !== 'f') show(id, logs);
+}
+
+function show(id, logs) {
+  const el = document.getElementById(id);
+  el.className = 'out show';
+  el.textContent = logs.join('\n');
+}
+</script>
+</body>
+</html>
